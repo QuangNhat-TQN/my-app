@@ -1,20 +1,30 @@
-import './App.css';
-import { Layout } from 'antd';
-const { Header, Footer, Sider, Content } = Layout;
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { publicRoutes } from './routes';
+import { DefaultLayout } from './components/Layout';
 
 function App() {
   return (
-    <div className="App">
-      <Layout>
-        <Header>header</Header>
-        <Layout>
-          <Sider>left sidebar</Sider>
-          <Content>main content</Content>
-          <Sider>right sidebar</Sider>
-        </Layout>
-        <Footer>footer</Footer>
-      </Layout>
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          {publicRoutes.map((route, index) => {
+            const Layout = route.layout || DefaultLayout;
+            const Page = route.component;
+            return (
+              <Route
+                key={index}
+                path={route.path}
+                element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                }
+              />
+            );
+          })}
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
